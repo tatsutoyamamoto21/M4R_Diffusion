@@ -3,7 +3,7 @@ from diffusers.utils import load_image
 import torch
 
 base_model_path = "stable-diffusion-v1-5/stable-diffusion-v1-5"
-controlnet_path = "output_models/checkpoint-20/controlnet"
+controlnet_path = "output_models/PATH-TO-MODEL"
 
 controlnet = ControlNetModel.from_pretrained(controlnet_path, torch_dtype=torch.float16)
 pipe = StableDiffusionControlNetPipeline.from_pretrained(
@@ -18,11 +18,11 @@ pipe.enable_xformers_memory_efficient_attention()
 pipe.enable_model_cpu_offload()
 
 control_image = load_image("./conditioning_image_1.png")
-prompt = "pale golden rod circle with old lace background"
+prompt = "Colourise this black and white image"
 
 # generate image
 generator = torch.manual_seed(0)
 image = pipe(
-    prompt, num_inference_steps=20, generator=generator, image=control_image
+    prompt, num_inference_steps=100, generator=generator, image=control_image
 ).images[0]
 image.save("./output.png")
